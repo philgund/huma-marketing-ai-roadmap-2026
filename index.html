@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huma HR — 5 AI Projects to Build in 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Calistoga&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+
+/* ═══════════════════════════════════════
+   HUMA BRAND TOKENS
+   Source: Huma_master_PPT_2026_NOR.pptx
+   ═══════════════════════════════════════ */
+:root {
+  --burgundy:  #632340;
+  --yellow:    #FFB64B;
+  --cream:     #FBF1DB;
+  --lavender:  #E5EEFF;
+  --sage:      #EAECDF;
+  --blush:     #FDD9E9;
+  --peach:     #FCE9CF;
+  --dark:      #2C2012;
+  --grey:      #CCCBCA;
+  --teal:      #0097A7;
+  --white:     #FFFFFF;
+
+  --text-muted: rgba(44,32,18,0.55);
+  --text-label: rgba(44,32,18,0.38);
+  --border:     rgba(44,32,18,0.09);
+
+  --ff-head: 'Calistoga', serif;
+  --ff-body: 'Lato', sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { background: var(--cream); color: var(--dark); font-family: var(--ff-body); font-weight:400; -webkit-font-smoothing:antialiased; }
+
+/* ═══ COVER ═══ */
+.cover {
+  background: var(--burgundy);
+  min-height: 340px;
+  padding: 52px 64px 56px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.cover::before {
+  content:''; position:absolute;
+  width:520px; height:520px; border-radius:50%;
+  background:var(--yellow); opacity:.07;
+  right:-160px; top:-220px; pointer-events:none;
+}
+.cover::after {
+  content:''; position:absolute;
+  width:280px; height:280px; border-radius:50%;
+  background:var(--yellow); opacity:.05;
+  right:200px; bottom:-150px; pointer-events:none;
+}
+.cover-top {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  position:relative; z-index:1;
+}
+.wordmark { font-family:var(--ff-head); font-size:26px; color:var(--yellow); letter-spacing:.02em; }
+.cover-meta {
+  font-family:var(--ff-body); font-size:10px; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(255,182,75,.45); text-align:right; line-height:1.8;
+}
+.cover-body { position:relative; z-index:1; }
+.cover-eyebrow {
+  font-size:11px; font-weight:700; letter-spacing:.2em;
+  text-transform:uppercase; color:rgba(251,241,219,.45); margin-bottom:14px;
+}
+h1 { font-family:var(--ff-head); font-size:60px; line-height:.98; color:var(--white); margin-bottom:8px; }
+h1 .yellow { color:var(--yellow); }
+.cover-sub {
+  font-size:15px; font-weight:300; color:rgba(251,241,219,.65);
+  line-height:1.65; max-width:560px; margin-bottom:36px;
+}
+
+/* KPI pills — sub text bumped to near-white for legibility */
+.kpi-strip { display:flex; flex-wrap:wrap; gap:8px; }
+.kpi-pill {
+  display:inline-flex; align-items:center; gap:10px;
+  background:rgba(255,182,75,.10); border:1px solid rgba(255,182,75,.24);
+  border-radius:100px; padding:7px 16px 7px 12px;
+}
+.kpi-name {
+  font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color:rgba(251,241,219,.85); /* ← FIXED: was .45, now .85 — readable on burgundy */
+}
+.kpi-val { font-family:var(--ff-head); font-size:15px; color:var(--yellow); }
+
+/* ═══ NAV ═══ */
+.nav {
+  background:var(--dark);
+  display:flex; overflow-x:auto; scrollbar-width:none;
+}
+.nav::-webkit-scrollbar { display:none; }
+.nav-btn {
+  flex-shrink:0; padding:14px 28px;
+  font-family:var(--ff-body); font-size:11px; font-weight:700;
+  letter-spacing:.06em; text-transform:uppercase;
+  color:rgba(251,241,219,.35); background:none; border:none; cursor:pointer;
+  border-bottom:3px solid transparent;
+  transition:color .18s, border-color .18s; white-space:nowrap;
+}
+.nav-btn:hover { color:var(--yellow); }
+.nav-btn.active { color:var(--yellow); border-bottom-color:var(--yellow); }
+
+/* ═══ PANELS ═══ */
+.panels { position:relative; }
+.panel  { display:none; }
+.panel.active { display:block; }
+
+.panel-hero {
+  padding:52px 64px 48px;
+  position:relative; overflow:hidden;
+}
+
+/* Rotating backgrounds — cream/peach/sage/lavender/blush (reordered to match new tab order) */
+.panel[data-idx="0"] .panel-hero { background:var(--peach); }
+.panel[data-idx="1"] .panel-hero { background:var(--lavender); }
+.panel[data-idx="2"] .panel-hero { background:var(--sage); }
+.panel[data-idx="3"] .panel-hero { background:var(--blush); }
+.panel[data-idx="4"] .panel-hero { background:var(--cream); }
+
+.panel-num {
+  font-family:var(--ff-head); font-size:120px; line-height:1;
+  color:rgba(99,35,64,.07); position:absolute; right:56px; top:20px;
+  user-select:none; pointer-events:none;
+}
+.panel-eyebrow {
+  font-size:10px; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--teal); margin-bottom:12px;
+}
+.panel-title {
+  font-family:var(--ff-head); font-size:42px; line-height:1.05;
+  color:var(--burgundy); margin-bottom:14px; max-width:680px;
+}
+.panel-hook {
+  font-size:15px; font-weight:300; line-height:1.72;
+  color:var(--text-muted); max-width:640px; margin-bottom:28px;
+}
+.panel-meta {
+  display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+}
+.pill {
+  display:inline-flex; align-items:center;
+  height:28px; padding:0 16px; border-radius:100px;
+  font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+}
+.pill-green { background:rgba(0,151,167,.12); color:var(--teal); }
+.pill-amber { background:rgba(255,182,75,.18); color:#7A5200; }
+.meta-divider { width:1px; height:20px; background:var(--border); }
+.meta-label { font-size:11px; font-weight:700; color:var(--text-label); text-transform:uppercase; letter-spacing:.08em; }
+.impact-track { display:flex; align-items:center; gap:8px; }
+.bar-bg { width:120px; height:5px; background:rgba(44,32,18,.10); border-radius:3px; overflow:hidden; }
+.bar-fg { height:100%; background:var(--burgundy); border-radius:3px; }
+.impact-word { font-size:11px; font-weight:700; color:var(--burgundy); }
+
+/* ═══ BODY ═══ */
+.panel-body {
+  display:grid; grid-template-columns:1fr 1fr; gap:0;
+  border-top:2px solid var(--burgundy);
+}
+.body-col {
+  padding:40px 56px;
+  border-right:1px solid var(--border);
+}
+.body-col:last-child { border-right:none; }
+.body-col-label {
+  font-size:9px; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--burgundy); margin-bottom:14px;
+  display:flex; align-items:center; gap:8px;
+}
+.body-col-label::after { content:''; flex:1; height:1px; background:rgba(99,35,64,.15); }
+.body-col p { font-size:13.5px; line-height:1.82; color:var(--text-muted); }
+.body-col ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.body-col ul li {
+  display:flex; gap:10px;
+  font-size:13.5px; line-height:1.65; color:var(--text-muted);
+}
+.body-col ul li::before {
+  content:'→'; color:var(--burgundy); font-weight:700;
+  flex-shrink:0; margin-top:1px;
+}
+.body-col ul li strong { color:var(--dark); }
+
+/* ═══ METRICS ═══ */
+.metrics-row {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--border);
+}
+.metric-box {
+  padding:28px 32px; border-right:1px solid var(--border);
+  background:var(--burgundy);
+}
+.metric-box:last-child { border-right:none; }
+.metric-box:nth-child(even) { background:rgba(99,35,64,.88); }
+.metric-name {
+  font-size:9px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  color:rgba(251,241,219,.5); margin-bottom:8px;
+}
+.metric-val { font-family:var(--ff-head); font-size:20px; color:var(--yellow); line-height:1.1; }
+.metric-sub { font-size:11px; color:rgba(251,241,219,.6); margin-top:4px; font-weight:300; }
+
+/* ═══ STACK ═══ */
+.stack-row {
+  padding:20px 56px; background:var(--dark);
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+}
+.stack-label {
+  font-size:9px; font-weight:700; letter-spacing:.18em;
+  text-transform:uppercase; color:rgba(251,241,219,.25);
+}
+.stack-chip {
+  height:22px; padding:0 12px;
+  border:1px solid rgba(255,182,75,.2); border-radius:100px;
+  font-size:10px; font-weight:700; letter-spacing:.04em;
+  color:rgba(255,182,75,.6); display:inline-flex; align-items:center;
+}
+
+/* ═══ CLOSING ═══ */
+.closing {
+  background:var(--burgundy); padding:52px 64px;
+  display:flex; justify-content:space-between; align-items:center; gap:32px;
+}
+.closing-title { font-family:var(--ff-head); font-size:36px; color:var(--white); margin-bottom:8px; }
+.closing-sub { font-size:13px; font-weight:300; color:rgba(251,241,219,.5); }
+.closing-pill {
+  font-family:var(--ff-head); font-size:15px;
+  color:var(--burgundy); background:var(--yellow);
+  padding:10px 28px; border-radius:100px; white-space:nowrap; flex-shrink:0;
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:720px){
+  .cover,.panel-hero,.body-col,.stack-row,.closing { padding-left:28px; padding-right:28px; }
+  h1 { font-size:38px; }
+  .panel-title { font-size:28px; }
+  .panel-num { display:none; }
+  .panel-body { grid-template-columns:1fr; }
+  .body-col { border-right:none; border-bottom:1px solid var(--border); }
+  .metrics-row { grid-template-columns:1fr 1fr; }
+  .closing { flex-direction:column; align-items:flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ COVER ══════ -->
+<div class="cover">
+  <div class="cover-top">
+    <div class="wordmark">huma</div>
+    <div class="cover-meta">AI Automation Roadmap<br>2026 | Marketing & Sales</div>
+  </div>
+  <div class="cover-body">
+    <div class="cover-eyebrow">Five projects to build next</div>
+    <h1>Automate.<br>Grow. <span class="yellow">Win.</span></h1>
+    <p class="cover-sub">A deep-dive into five AI projects grounded in Huma's 2026 commercial targets — with real build specs, success metrics, and stack requirements for each.</p>
+    <div class="kpi-strip">
+      <div class="kpi-pill"><span class="kpi-name">Target ARR</span><span class="kpi-val">85 MNOK</span></div>
+      <div class="kpi-pill"><span class="kpi-name">New ARR</span><span class="kpi-val">27–30 MNOK</span></div>
+      <div class="kpi-pill"><span class="kpi-name">Lead → MQL</span><span class="kpi-val">40%</span></div>
+      <div class="kpi-pill"><span class="kpi-name">Demo → Paid</span><span class="kpi-val">&gt;25%</span></div>
+      <div class="kpi-pill"><span class="kpi-name">CAC Payback</span><span class="kpi-val">&lt;9 months</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ NAV — reordered by priority ══════ -->
+<nav class="nav" id="nav">
+  <button class="nav-btn active" data-panel="0">01 — Campaign Loop</button>
+  <button class="nav-btn"        data-panel="1">02 — Blog → Social</button>
+  <button class="nav-btn"        data-panel="2">03 — Intel Digest</button>
+  <button class="nav-btn"        data-panel="3">04 — Competitive Agent</button>
+  <button class="nav-btn"        data-panel="4">05 — ICP Monitor</button>
+</nav>
+
+<div class="panels" id="panels">
+
+  <!-- ══ 01 — CAMPAIGN LOOP ══ -->
+  <div class="panel active" data-idx="0">
+    <div class="panel-hero">
+      <div class="panel-num">01</div>
+      <div class="panel-eyebrow">Paid Media — Full-Circle Automation</div>
+      <div class="panel-title">Autonomous Campaign Loop</div>
+      <p class="panel-hook">The most ambitious project on the list — and the one with the highest long-term commercial payoff. A full-circle system that takes a campaign from idea to live ads to performance tracking to AI-optimised iteration, with human approval at each gate and no manual work in between.</p>
+      <div class="panel-meta">
+        <div class="pill pill-amber">● 6–10 weeks (staged build)</div>
+        <div class="meta-divider"></div>
+        <span class="meta-label">Pipeline impact</span>
+        <div class="impact-track">
+          <div class="bar-bg"><div class="bar-fg" style="width:94%"></div></div>
+          <span class="impact-word">Very High (when live)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="body-col">
+        <div class="body-col-label">The six stages of the loop</div>
+        <ul>
+          <li><strong>Stage 1 — Ideation:</strong> You or Claude propose a campaign brief. Claude generates 5 concept variants with headline, hook, CTA, persona (CEO/HR leader), market (NO/SE/FI), and recommended format. You pick one or remix.</li>
+          <li><strong>Stage 2 — Creative production:</strong> Approved concept feeds huma-content-engine for copy variants (5 per format: Meta feed/story, Google search/display). Simultaneously generates a Figma brief for the designer with visual direction and brand variables mapped.</li>
+          <li><strong>Stage 3 — Review & approval:</strong> Slack message with copy + Figma link. Designer and writer approve or comment in-thread. No email, no chasing.</li>
+          <li><strong>Stage 4 — Publishing:</strong> Approved assets pushed to Meta and Google Ads via API. Campaign structure, budget, targeting, and flight dates set from the original brief. <em>Blocked pending API access from agency — unblockable independently.</em></li>
+          <li><strong>Stage 5 — Performance monitoring:</strong> Weekly read-only pull of campaign metrics — impressions, CTR, CPC, conversions per variant. Routed to the Monday digest and stored in Notion.</li>
+          <li><strong>Stage 6 — AI optimisation:</strong> Claude analyses performance data, identifies best and worst-performing variants, and proposes specific tweaks — headline change, new CTA, audience adjustment. Routed for approval before any change is made.</li>
+        </ul>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Build order — what's unblocked now</div>
+        <p style="margin-bottom:16px">Stages 1–3 and 5 are buildable immediately. Stage 4 (publishing) and Stage 6 (optimisation loop) require ad account API access from the external agency managing Meta and Google Ads. Don't wait for that to start — begin now and the full loop snaps into place when access arrives.</p>
+        <ul>
+          <li><strong>Now (weeks 1–3):</strong> Stage 1 ideation, Stage 2 copy production + Figma brief, Stage 3 Slack approval flow</li>
+          <li><strong>Now (weeks 3–4):</strong> Stage 5 read-only performance monitoring via reporting APIs — does not require publishing access</li>
+          <li><strong>When API access arrives:</strong> Stage 4 publishing + Stage 6 optimisation loop slot in with no rebuild required</li>
+        </ul>
+        <p style="margin-top:16px">This is your 300K NOK/month ad spend operating with the intelligence of a 500K/month budget — because every krone is optimised continuously rather than monthly.</p>
+      </div>
+    </div>
+
+    <div class="metrics-row">
+      <div class="metric-box">
+        <div class="metric-name">Production speed</div>
+        <div class="metric-val">Brief → live-ready</div>
+        <div class="metric-sub">Target: under 48 hrs vs current 2+ weeks</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-name">Media efficiency</div>
+        <div class="metric-val">Cost per MQL</div>
+        <div class="metric-sub">Maintain ≤500 NOK as spend scales</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-name">Optimisation lift</div>
+        <div class="metric-val">CTR per cycle</div>
+        <div class="metric-sub">Benchmark each variant before tweaking</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-name">Output coverage</div>
+        <div class="metric-val">Campaigns/quarter</div>
+        <div class="metric-sub">Target: 3× current output, same team</div>
+      </div>
+    </div>
+
+    <div class="stack-row">
+      <span class="stack-label">Stack</span>
+      <span class="stack-chip">Claude API</span>
+      <span class="stack-chip">huma-content-engine</span>
+      <span class="stack-chip">Figma MCP</span>
+      <span class="stack-chip">Slack</span>
+      <span class="stack-chip">Notion</span>
+      <span class="stack-chip">Meta Ads API (pending)</span>
+      <span class="stack-chip">Google Ads API (pending)</span>
+      <span class="stack-chip">HubSpot Enterprise</span>
+    </div>
+  </div>
+
+  <!-- ══ 02 — BLOG → SOCIAL ══ -->
+  <div class="panel" data-idx="1">
+    <div class="panel-hero">
+      <div class="panel-num">02</div>
+      <div class="panel-eyebrow">Content Distribution — Extension of current content pipeline</div>
+      <div class="panel-title">Blog → Social Automation Pipeline</div>
+      <p class="panel-hook">Your 2026 social strategy has a non-negotiable rule: every blog post generates a LinkedIn carousel, a LinkedIn text post, and an Instagram concept. Right now that rule breaks every time there's a handoff. This project closes the loop — so every published blog automatically becomes a full social package, ready for your designer and writer to approve.</p>
+      <div class="panel-meta">
+        <div class="pill pill-green">● Ready in 1–2 weeks</div>
+        <div class="meta-divider"></div>
+        <span class="meta-label">Pipeline impact</span>
+        <div class="impact-track">
+          <div class="bar-bg"><div class="bar-fg" style="width:68%"></div></div>
+          <span class="impact-word">Medium-High</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="body-col">
+        <div class="body-col-label">What it does — extends the current pipeline</div>
+        <ul>
+          <li>Watches for new "Published" status in your Notion content pipeline database</li>
+          <li>Passes the published blog to huma-content-engine to extract the key argument, hook, and supporting evidence</li>
+          <li>Generates three social assets per blog: LinkedIn carousel brief (8–12 slides), LinkedIn text post (opinion angle), Instagram concept (Reel or carousel)</li>
+          <li>Routes a Slack brief to your designer with the carousel structure and your writer with the copy — both in one message, one click to approve</li>
+          <li>Once approved, pushes to the social content calendar in Notion, ready to schedule</li>
+        </ul>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Why it matters to 2026</div>
+        <p>Your social goals are aggressive: LinkedIn 50K impressions/month at 3–4 posts/week, Instagram 3×/week. The only way to hit those numbers sustainably — given a one-person writer and one designer — is automating the distribution layer. Your content is already being written. The bottleneck is the gap between "blog published" and "social posts scheduled." This project eliminates that gap entirely. It's directly additive to Pillar 3 (Content & Thought Leadership) and mirrors the blog → social pipeline rule already written into your 2026 social strategy.</p>
+      </div>
+    </div>
+
+    <div class="metrics-row">
+      <div class="metric-box">
+        <div class="metric-name">Distribution rate</div>
+        <div class="metric-val">3 assets per blog</div>
+        <div class="metric-sub">Target: 100% of published blogs get all 3 social formats</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-name">Speed to social</div>
+        <div class="metric-val">Blog → draft ready</div>
+        <div class="metric-sub">Target: under 30 minutes from publish</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-name">Volume lift</div>
+        <div class="metric-val">Posts/week LinkedIn</div>
+        <div class="metric-sub">Target: reach 3–4/week consistently</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-name">Reach</div>
+        <div class="metric-val">Impressions/week</div>
+        <div class="metric-sub">Track vs 50K/month LinkedIn target</div>
+      </div>
+    </div>
+
+    <div class="stack-row">
+      <span class="stack-label">Stack</span>
+      <span class="stack-chip">Notion (content pipeline)</span>
+      <span class="stack-chip">Claude API</span>
+      <span class="stack-chip">huma-content-engine</span>
+      <span class="stack-chip">huma-social-media</span>
+      <span class="stack-chip">Slack</span>
+      <span class="stack-chip">Zapier</span>
+    </div>
+  </div>
+
+  <!-- ══ 03 — INTEL DIGEST ══ -->
+  <div class="panel" data-idx="2">
+    <div class="panel-hero">
+      <div class="panel-num">03</div>
+      <div class="panel-eyebrow">Reporting & Ops</div>
+      <div class="panel-title">Weekly Marketing Intelligence Digest</div>
+      <p class="panel-hook">Three hours per week disappear into pulling HubSpot data, checking content output, scanning pipeline movement, and assembling a status update no one asked for in slide form. The intelligence digest replaces all of that with one Slack message, every Monday morning, built automatically from live data — with both a weekly view and a rolling LTM lens so you're never just reacting.</p>
+      <div class="panel-meta">
+        <div class="pill pill-green">● Ready in 1 week</div>
+        <div class="meta-divider"></div>
+        <span class="meta-label">Pipeline impact</span>
+        <div class="impact-track">
+          <div class="bar-bg"><div class="bar-fg" style="width:62%"></div></div>
+          <span class="impact-word">Medium</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="body-col">
+        <div class="body-col-label">Five fixed sections — with LTM anchoring</div>
+        <ul>
+          <li><strong>Funnel snapshot:</strong> Leads, MQLs, SQLs, wins this week vs last week vs LTM average vs 2026 OKR target — traffic light per metric. The LTM anchor prevents over-reacting to a quiet week or over-celebrating a lucky one.</li>
+          <li><strong>Deal quality matrix:</strong> Win rates broken out by country (NO / SE / FI) AND by deal size bucket — under 50K NOK, 50–85K NOK, 85K+ NOK. Surfaces the critical question: are we winning the right deals, or filling the pipeline with large deals we can't close?</li>
+          <li><strong>Content output:</strong> Posts published, blog articles live, social performance — open/click rates, top-performing piece this week vs LTM average.</li>
+          <li><strong>Top 3 actions:</strong> Claude synthesises what needs to happen this week based on the data above — not generic, tied to actual numbers.</li>
+          <li><strong>One decision needed:</strong> The single thing that requires a human call — flagged clearly, not buried in a wall of data.</li>
+        </ul>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Why the deal size matrix matters</div>
+        <p style="margin-bottom:16px">The deal size × win rate × country breakdown is the most strategically important addition. Your 2026 plan sets a SQL → Win target of 40% for Norway and 25% for SE/FI — but those numbers hide a lot of nuance. If you're winning 60% of deals under 50K NOK and 10% of deals above 85K NOK, your SDR time and nurture resources are misallocated. If Norway is winning large deals but SE/FI are only converting small ones, the expansion thesis needs a rethink.</p>
+        <p>The LTM reference point serves a different purpose: it stops the digest from creating panic or false confidence on short runs. A single quiet week in August looks alarming without LTM context; a record week in October looks like a trend when it isn't. Both views — weekly and LTM — need to be visible simultaneously.</p>
+      </div>
+    </div>
+
+    <div class="metrics-row">
+      <div class="metric-box">
+        <div class="metric-name">Time saved</div>
+        <div class="metric-val">~3 hrs/week</div>
+        <div class="metric-sub">Eliminated manual reporting prep</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-name">Win rate insight</div>
+        <div class="metric-val">By country + deal size</div>
+        <div class="metric-sub">&lt;50K / 50–85K / 85K+ NOK buckets</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-name">Reference window</div>
+        <div class="metric-val">Week + LTM</div>
+        <div class="metric-sub">Both views visible in every digest</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-name">Decision velocity</div>
+        <div class="metric-val">Signal → action</div>
+        <div class="metric-sub">Target: same-week on all flagged items</div>
+      </div>
+    </div>
+
+    <div class="stack-row">
+      <span class="stack-label">Stack</span>
+      <span class="stack-chip">HubSpot MCP</span>
+      <span class="stack-chip">Claude API</span>
+      <span class="stack-chip">Notion</span>
+      <span class="stack-chip">Slack</span>
+      <span class="stack-chip">huma-marketing-reporting</span>
+    </div>
+  </div>
+
+  <!-- ══ 04 — COMPETITIVE AGENT ══ -->
+  <div class="panel" data-idx="3">
+    <div class="panel-hero">
+      <div class="panel-num">04</div>
+      <div class="panel-eyebrow">Brand & Content Strategy</div>
+      <div class="panel-title">Autonomous Competitive Positioning Agent</div>
+      <p class="panel-hook">Simployer, Personio, HaileyHR, and Sympa update their pricing pages, add features, and run promotions continuously. And customers leave reviews on G2, Capterra, and Trustpilot that reveal gaps and frustrations your sales team could be exploiting in real time. Right now, none of that intelligence reaches the Huma team unless someone happens to spot it.</p>
+      <div class="panel-meta">
+        <div class="pill pill-green">● Ready in 2–3 weeks</div>
+        <div class="meta-divider"></div>
+        <span class="meta-label">Pipeline impact</span>
+        <div class="impact-track">
+          <div class="bar-bg"><div class="bar-fg" style="width:80%"></div></div>
+          <span class="impact-word">High</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="body-col">
+        <div class="body-col-label">What it does</div>
+        <ul>
+          <li><strong>Page monitoring:</strong> Scrapes homepage, pricing, features, changelog, and blog weekly from Simployer, Personio, HaileyHR, and Sympa — diffs against the previous week and surfaces every change</li>
+          <li><strong>Review site scraping:</strong> Pulls new reviews from G2, Capterra, and Trustpilot for each competitor — extracts recurring complaints, feature requests, and praise patterns. A complaint about Simployer's onboarding is a positioning opportunity for Huma's simplicity story.</li>
+          <li><strong>Positioning brief:</strong> Claude synthesises page diffs + review themes into a weekly brief: what changed, what customers are saying, and a suggested messaging adjustment or battlecard update</li>
+          <li><strong>Delivery:</strong> Routed to a dedicated Slack channel every Monday — same time as the intel digest, so both land together</li>
+          <li><strong>Battlecard feed:</strong> Pushes updates directly into the SDR battlecard pages in Notion — no manual copy-paste required</li>
+        </ul>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Why it matters to 2026</div>
+        <p style="margin-bottom:16px">Your 2026 plan explicitly includes SDR battlecards for Simployer, HaileyHR, Sympa, and 4Human. But battlecards go stale fast — especially when competitors are actively repositioning. An always-on agent means those cards stay current without anyone having to maintain them manually.</p>
+        <p style="margin-bottom:16px">The review site layer is what makes this more than just a page-diff tool. Competitor reviews are a live feed of buyer frustrations — the specific objections, integration failures, and UX complaints that come up in sales calls. Knowing that Simployer customers are frustrated about mobile experience, or that HaileyHR is getting dinged for support response times, gives your SDRs a precise, credible counter-narrative.</p>
+        <p>In SE and FI — where win rates sit at 25% and you're still building credibility — sharp, current competitive positioning is a direct lever on the SQL → Win rate.</p>
+      </div>
+    </div>
+
+    <div class="metrics-row">
+      <div class="metric-box">
+        <div class="metric-name">Cadence</div>
+        <div class="metric-val">Weekly brief</div>
+        <div class="metric-sub">100% delivery rate, every Monday</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-name">Freshness</div>
+        <div class="metric-val">Battlecard lag</div>
+        <div class="metric-sub">Target: &lt;7 days from competitor change</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-name">Review coverage</div>
+        <div class="metric-val">G2 + Capterra + Trustpilot</div>
+        <div class="metric-sub">New reviews surfaced weekly per competitor</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-name">Sales impact</div>
+        <div class="metric-val">Win rate on comp. deals</div>
+        <div class="metric-sub">Track SE/FI separately vs NO baseline</div>
+      </div>
+    </div>
+
+    <div class="stack-row">
+      <span class="stack-label">Stack</span>
+      <span class="stack-chip">Claude API</span>
+      <span class="stack-chip">Playwright (web scraping)</span>
+      <span class="stack-chip">G2 / Capterra / Trustpilot</span>
+      <span class="stack-chip">Notion</span>
+      <span class="stack-chip">Slack</span>
+      <span class="stack-chip">huma-content-engine</span>
+    </div>
+  </div>
+
+  <!-- ══ 05 — ICP MONITOR ══ -->
+  <div class="panel" data-idx="4">
+    <div class="panel-hero">
+      <div class="panel-num">05</div>
+      <div class="panel-eyebrow">Demand Generation / SDR Enablement</div>
+      <div class="panel-title">ICP Signal Monitor → Warm Lead Alerts</div>
+      <p class="panel-hook">Companies that are actively hiring HR roles, expanding headcount, or showing growth in the Nordic public business registries are already in-market for Huma — they just haven't raised their hand yet. Instead of waiting, this system watches for them and routes them directly to your qualifying SDR the moment they show intent — already enriched and ready to act on.</p>
+      <div class="panel-meta">
+        <div class="pill pill-green">● Ready in 1–2 weeks</div>
+        <div class="meta-divider"></div>
+        <span class="meta-label">Pipeline impact</span>
+        <div class="impact-track">
+          <div class="bar-bg"><div class="bar-fg" style="width:96%"></div></div>
+          <span class="impact-word">Very High</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="body-col">
+        <div class="body-col-label">What it does</div>
+        <ul>
+          <li><strong>Job board monitoring:</strong> Watches Finn.no, LinkedIn, and Indeed SE/FI for open HR roles at ICP companies — a leading indicator they're actively building HR capacity and likely evaluating tools</li>
+          <li><strong>Nordic business registries:</strong> Monitors Proff.no (Norway), Proff.se (Sweden), and Finder.fi (Finland) for filing activity, revenue growth, and headcount changes — public accounting and corporate data that signals company health and expansion</li>
+          <li><strong>AI prospecting tool integration:</strong> Connects to the AI prospecting tool already in use by your SDRs and Account Executives — so signals flow directly into their existing workflow rather than creating a new inbox to check</li>
+          <li><strong>HubSpot sync:</strong> Cross-references signals against your ICP criteria in HubSpot. If the company already exists as a contact or deal, the signal is added as an activity. If not, a new record is created with the signal as the source.</li>
+          <li><strong>Slack alert:</strong> Routes to your qualifying SDR with company name, signal type, why it matches ICP, and a suggested opening line</li>
+        </ul>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Why it matters to 2026</div>
+        <p style="margin-bottom:16px">Your MQL → SQL target is 40% and SDR utilisation ≥ 80%. Both are easier to hit when the qualifying SDR is working a ranked queue of warm signals rather than a flat list of cold contacts. Signal-based outbound consistently outperforms cold by 2–3× in reply rate.</p>
+        <p style="margin-bottom:16px">The Nordic registry angle — Proff.no, Proff.se, Finder.fi — is particularly valuable in Scandinavia because company financials and employee counts are public. A company that filed 40% revenue growth last year and has 45 employees is a perfect Huma ICP. That data exists, it just needs to be surfaced automatically.</p>
+        <p>Integrating with the existing AI prospecting tool is the key adoption unlock. If signals land in the tool SDRs already use every day, the behaviour change required is zero. No new tab, no new inbox — just better leads in the same queue.</p>
+      </div>
+    </div>
+
+    <div class="metrics-row">
+      <div class="metric-box">
+        <div class="metric-name">Primary KPI</div>
+        <div class="metric-val">Outbound reply rate</div>
+        <div class="metric-sub">Target: 2–3× current cold baseline</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-name">Lead quality</div>
+        <div class="metric-val">Signal-sourced MQLs</div>
+        <div class="metric-sub">Track weekly from week 3 onwards</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-name">SDR efficiency</div>
+        <div class="metric-val">Time on signal vs cold</div>
+        <div class="metric-sub">Target: &gt;60% of SDR time on signal leads</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-name">Funnel impact</div>
+        <div class="metric-val">MQL → SQL lift</div>
+        <div class="metric-sub">Expected: +15–25% within 60 days</div>
+      </div>
+    </div>
+
+    <div class="stack-row">
+      <span class="stack-label">Stack</span>
+      <span class="stack-chip">HubSpot Enterprise</span>
+      <span class="stack-chip">Claude API</span>
+      <span class="stack-chip">Proff.no / Proff.se / Finder.fi</span>
+      <span class="stack-chip">LinkedIn job signals</span>
+      <span class="stack-chip">AI prospecting tool (existing)</span>
+      <span class="stack-chip">Slack</span>
+      <span class="stack-chip">Zapier</span>
+    </div>
+  </div>
+
+</div><!-- /panels -->
+
+<!-- ══════ CLOSING ══════ -->
+<div class="closing">
+  <div class="closing-left">
+    <div class="closing-title">Start with what's unblocked.</div>
+    <div class="closing-sub">Projects 02–05 are fully buildable now. Project 01 (Campaign Loop) stages 1–3 & 5 too — stages 4 & 6 unlock when agency API access arrives.</div>
+  </div>
+  <div class="closing-pill">Local HR, playfully easy.</div>
+</div>
+
+<script>
+const btns   = document.querySelectorAll('.nav-btn');
+const panels = document.querySelectorAll('.panel');
+
+btns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const i = parseInt(btn.dataset.panel);
+    panels.forEach((p, j) => p.classList.toggle('active', j === i));
+    btns.forEach((b, j)   => b.classList.toggle('active', j === i));
+    btn.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
+  });
+});
+</script>
+</body>
+</html>
